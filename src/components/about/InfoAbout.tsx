@@ -4,19 +4,21 @@ import { motion, AnimatePresence } from "framer-motion"
 import { CardItems } from "../../types"
 
 const InfoAbout = () => {
+  const dispatch = (
+    _: CardItems,
+    action: { type: "set" | "clear"; payload?: CardItems }
+  ) => {
+    switch (action.type) {
+      case "clear":
+        return {} as CardItems
+      case "set":
+        return action.payload as CardItems
+    }
+  }
+
   const [selected, setSelected] = useState("")
   const [open, setOpen] = useState(false)
-  const [item, setItem] = useReducer(
-    (_: CardItems, action: { type: "set" | "clear"; payload?: CardItems }) => {
-      switch (action.type) {
-        case "clear":
-          return {} as CardItems
-        case "set":
-          return action.payload as CardItems
-      }
-    },
-    {} as CardItems
-  )
+  const [item, setItem] = useReducer(dispatch, {} as CardItems)
 
   const handleSelected = (id: string) => {
     setSelected(id)
@@ -30,6 +32,7 @@ const InfoAbout = () => {
 
   useEffect(() => {
     console.log(selected)
+    item !== ({} as CardItems) ? console.log("true") : null
   }, [selected])
 
   const dataInfo = [
@@ -67,8 +70,10 @@ const InfoAbout = () => {
         type: "set",
         payload: item,
       })
+      console.log("true")
     } else {
       setItem({ type: "clear" })
+      console.log(item)
     }
     console.log(item)
   }, [selected])
