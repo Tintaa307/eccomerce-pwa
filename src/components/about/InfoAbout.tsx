@@ -32,7 +32,6 @@ const InfoAbout = () => {
 
   useEffect(() => {
     console.log(selected)
-    item !== ({} as CardItems) ? console.log("true") : null
   }, [selected])
 
   const dataInfo = [
