@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useReducer } from "react"
 import styles from "./About.module.css"
 import { motion, AnimatePresence } from "framer-motion"
 import { CardItems } from "../../types"
@@ -6,7 +6,17 @@ import { CardItems } from "../../types"
 const InfoAbout = () => {
   const [selected, setSelected] = useState("")
   const [open, setOpen] = useState(false)
-  const [item, setItem] = useState<CardItems | null>(null)
+  const [item, setItem] = useReducer(
+    (_: CardItems, action: { type: "set" | "clear"; payload?: CardItems }) => {
+      switch (action.type) {
+        case "clear":
+          return {} as CardItems
+        case "set":
+          return action.payload as CardItems
+      }
+    },
+    {} as CardItems
+  )
 
   const handleSelected = (id: string) => {
     setSelected(id)
@@ -22,7 +32,7 @@ const InfoAbout = () => {
     console.log(selected)
   }, [selected])
 
-  const dataInfo: CardItems[] = [
+  const dataInfo = [
     {
       id: "1",
       title: "Buena calidad de los productos",
@@ -52,7 +62,14 @@ const InfoAbout = () => {
 
   useEffect(() => {
     const item = dataInfo.find((item) => item.id === selected)
-    setItem(item ? item : null)
+    if (item) {
+      setItem({
+        type: "set",
+        payload: item,
+      })
+    } else {
+      setItem({ type: "clear" })
+    }
     console.log(item)
   }, [selected])
 
