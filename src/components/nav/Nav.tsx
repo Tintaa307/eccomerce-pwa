@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useReducer, useState } from "react"
 import styles from "./Nav.module.css"
 import { NavItems } from "../../types"
 import { Variants, motion } from "framer-motion"
@@ -71,22 +71,10 @@ const inputVariants: Variants = {
   },
 }
 
-const svgVariants: Variants = {
-  hidden: {
-    opacity: 0,
-    pathLength: 0,
-    fill: "none",
-  },
-  visible: {
-    opacity: 1,
-    pathLength: 1,
-    fill: "#000",
-  },
-}
-
 const Nav = () => {
   const [open, setOpen] = useState(false)
-  const [search, setSearch] = useState(false)
+  const [appear, setAppear] = useState(false)
+  const [search, setSearch] = useState()
 
   const onScroll = () => {
     if (window.scrollY > 0) {
@@ -96,8 +84,8 @@ const Nav = () => {
     }
   }
 
-  const onSearch = () => {
-    setSearch(!search)
+  const onAppear = () => {
+    setAppear(!appear)
   }
 
   useEffect(() => {
@@ -160,7 +148,7 @@ const Nav = () => {
         <div className={styles.containerSearch}>
           <motion.input
             initial={false}
-            animate={search ? "appear" : "disappear"}
+            animate={appear ? "appear" : "disappear"}
             variants={inputVariants}
             type="search"
             placeholder="Qué necesitas..."
@@ -170,16 +158,16 @@ const Nav = () => {
           <div className={styles.icon}>
             <motion.i
               initial={true}
-              animate={search ? "closed" : "open"}
+              animate={appear ? "closed" : "open"}
               variants={iconsVariants}
-              onClick={onSearch}
+              onClick={onAppear}
               className="ri-search-2-line"
             ></motion.i>
             <motion.i
               initial={false}
-              animate={search ? "open" : "closed"}
+              animate={appear ? "open" : "closed"}
               variants={iconsVariants}
-              onClick={onSearch}
+              onClick={onAppear}
               className="ri-close-line"
             ></motion.i>
           </div>

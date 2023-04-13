@@ -7,7 +7,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Store</title>
+        <title>Merkal</title>
         <meta name="description" content="Cheap Store" />
       </Head>
       <Nav />
